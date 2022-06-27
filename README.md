@@ -5,4 +5,4 @@ gif (Goatse infection finder) is a tool that helps Garry's Mod users find infect
 [Releases](https://github.com/LGuerrero13/gif/releases/tag/Release)
 
 ## Authors
-Jose Leonardo Guerrero - Creator
+Leonardo Guerrero - Creator
