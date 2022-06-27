@@ -53,6 +53,11 @@ namespace gif
 
         private void findInfectedFiles()
         {
+            if (lstInfectedFiles.InvokeRequired) // required to call component created in a different thread.
+            {
+                lstInfectedFiles.Invoke(new MethodInvoker(delegate { lstInfectedFiles.Items.Clear(); }));
+            }
+
             progressBar.Value = 0;
 
             string[] allFiles = Directory.GetFiles(txtboxFilePath.Text, "*.gma");
@@ -115,23 +120,38 @@ namespace gif
             if (progressBar.InvokeRequired)
             {
                 progressBar.Invoke(new MethodInvoker(delegate { progressBar.Value = 0; }));
-                lblScannedFile.Invoke(new MethodInvoker(delegate { lblScannedFile.Text = "Done!"; }));
+
+                if (lstInfectedFiles.Items.Count <= 0)
+                {
+                    lblScannedFile.Invoke(new MethodInvoker(delegate {
+                        lblScannedFile.ForeColor = Color.Green; 
+                        lblScannedFile.Text = "Done, you are clean!";
+                        btnScan.Enabled = true;
+                    }));
+                }
+                else
+                {
+                    lblScannedFile.Invoke(new MethodInvoker(delegate {
+                        lblScannedFile.ForeColor = Color.Red;
+                        lblScannedFile.Text = "Infected file(s) detected! Please delete and remove from workshop.";
+                        btnScan.Enabled = true;
+                    }));
+                }
             }
         }
 
         private void btnScan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtboxFilePath.Text) || 
-                string.IsNullOrWhiteSpace(txtboxFilePath.Text) ||
+            if (string.IsNullOrWhiteSpace(txtboxFilePath.Text) ||
                 txtboxFilePath.Text == "Garry's mod addon path")
                 return;
 
-            if (_thread == null)
-            {
-                _thread = new Thread(new ThreadStart(findInfectedFiles));
-                _thread.IsBackground = true;
-                _thread.Start();
-            }
+            lblScannedFile.ForeColor = Color.Black;
+            btnScan.Enabled = false;
+
+            _thread = new Thread(new ThreadStart(findInfectedFiles));
+            _thread.IsBackground = true;
+            _thread.Start();
         }
 
         private void lstInfectedFiles_DoubleClick(object sender, EventArgs e)
