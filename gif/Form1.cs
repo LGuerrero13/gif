@@ -23,7 +23,7 @@ namespace gif
                     }
                 }
             }
-            return "Garry's mod addon path";
+            return "Garry's Mod Addon Folder Path";
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -45,7 +45,7 @@ namespace gif
 
         private void txtboxFilePath_Enter(object sender, EventArgs e)
         {
-            if (txtboxFilePath.Text == "Garry's mod addon path")
+            if (txtboxFilePath.Text.Equals("Garry's Mod Addon Folder Path"))
             {
                 txtboxFilePath.Text = "";
             }
