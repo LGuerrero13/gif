@@ -42,7 +42,7 @@
             // lblAddonsPath
             // 
             this.lblAddonsPath.AutoSize = true;
-            this.lblAddonsPath.Location = new System.Drawing.Point(12, 9);
+            this.lblAddonsPath.Location = new System.Drawing.Point(11, 9);
             this.lblAddonsPath.Name = "lblAddonsPath";
             this.lblAddonsPath.Size = new System.Drawing.Size(75, 15);
             this.lblAddonsPath.TabIndex = 0;
@@ -54,7 +54,7 @@
             this.txtboxFilePath.Name = "txtboxFilePath";
             this.txtboxFilePath.Size = new System.Drawing.Size(430, 23);
             this.txtboxFilePath.TabIndex = 3;
-            this.txtboxFilePath.Text = "Garry\'s mod addon path";
+            this.txtboxFilePath.Text = "Garry\'s Mod Addon Folder Path";
             this.txtboxFilePath.Enter += new System.EventHandler(this.txtboxFilePath_Enter);
             // 
             // openFileDialog1
@@ -83,18 +83,19 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 365);
+            this.progressBar.Location = new System.Drawing.Point(91, 336);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(425, 23);
+            this.progressBar.Size = new System.Drawing.Size(432, 23);
             this.progressBar.TabIndex = 4;
             // 
             // lblScannedFile
             // 
             this.lblScannedFile.AutoSize = true;
-            this.lblScannedFile.Location = new System.Drawing.Point(12, 391);
+            this.lblScannedFile.Location = new System.Drawing.Point(12, 367);
             this.lblScannedFile.Name = "lblScannedFile";
-            this.lblScannedFile.Size = new System.Drawing.Size(0, 15);
+            this.lblScannedFile.Size = new System.Drawing.Size(53, 15);
             this.lblScannedFile.TabIndex = 5;
+            this.lblScannedFile.Text = "File: N/A";
             // 
             // lstInfectedFiles
             // 
@@ -110,7 +111,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 418);
+            this.ClientSize = new System.Drawing.Size(537, 392);
             this.Controls.Add(this.lstInfectedFiles);
             this.Controls.Add(this.lblScannedFile);
             this.Controls.Add(this.progressBar);
@@ -122,7 +123,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "gif";
-            this.Text = "gif";
+            this.Text = "Goatse Infection Finder";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
