@@ -60,7 +60,21 @@ namespace gif
 
             progressBar.Value = 0;
 
-            string[] allFiles = Directory.GetFiles(txtboxFilePath.Text, "*.gma");
+            string[] allFiles;
+            try
+            {
+                allFiles = Directory.GetFiles(txtboxFilePath.Text, "*.gma");
+            }
+            catch (DirectoryNotFoundException dnfEx)
+            {
+                MessageBox.Show($"Directory \"{txtboxFilePath.Text}\" is not a valid directory.", "Folder path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception genEx)
+            {
+                MessageBox.Show($"There was an error using this program\nError: {genEx.Message}.", "Folder path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             /*
                 Taken from https://www.reddit.com/r/gmod/comments/vl9fie/psa_everything_known_about_june_workshop_incident/
@@ -101,7 +115,7 @@ namespace gif
 
                 if (lblScannedFile.InvokeRequired)
                 {
-                    lblScannedFile.Invoke(new MethodInvoker(delegate { lblScannedFile.Text = file.Split(@"\").Last(); }));
+                    lblScannedFile.Invoke(new MethodInvoker(delegate { lblScannedFile.Text = $"File: {file.Split(@"\").Last()}"; }));
                     progressBar.Invoke(new MethodInvoker(delegate { progressBar.Value += 1; }));
                 }
 
@@ -142,9 +156,11 @@ namespace gif
 
         private void btnScan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtboxFilePath.Text) ||
-                txtboxFilePath.Text == "Garry's mod addon path")
+            if (string.IsNullOrWhiteSpace(txtboxFilePath.Text) || !Directory.Exists(txtboxFilePath.Text))
+            {
+                MessageBox.Show("Please enter in a valid folder for GIF to look at", "Folder path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
 
             lblScannedFile.ForeColor = Color.Black;
             btnScan.Enabled = false;
