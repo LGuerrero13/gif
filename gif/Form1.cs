@@ -140,19 +140,13 @@ namespace gif
 
                 try
                 {
-                    bool firstOccurance = false;
                     IEnumerable<string> lines = File.ReadLines(file);
                     foreach (string line in lines)
                     {
                         if (line.Contains("I hope you realize you aren't safe in workshop anymore"))
-                            firstOccurance = true;
-                    }
-
-                    if (firstOccurance)
-                    {
-                        if (lstInfectedFiles.InvokeRequired)
                         {
                             lstInfectedFiles.Invoke(new MethodInvoker(delegate { lstInfectedFiles.Items.Add(file); }));
+                            break;
                         }
                     }
                 }
