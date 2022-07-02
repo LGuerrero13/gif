@@ -37,6 +37,8 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblScannedFile = new System.Windows.Forms.Label();
             this.lstInfectedFiles = new System.Windows.Forms.ListBox();
+            this.btnDownloadIDs = new System.Windows.Forms.Button();
+            this.bwrLoadAddonList = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // lblAddonsPath
@@ -73,9 +75,9 @@
             // 
             // btnScan
             // 
-            this.btnScan.Location = new System.Drawing.Point(12, 336);
+            this.btnScan.Location = new System.Drawing.Point(11, 336);
             this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(75, 23);
+            this.btnScan.Size = new System.Drawing.Size(102, 23);
             this.btnScan.TabIndex = 1;
             this.btnScan.Text = "Scan";
             this.btnScan.UseVisualStyleBackColor = true;
@@ -83,9 +85,9 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(91, 336);
+            this.progressBar.Location = new System.Drawing.Point(229, 336);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(432, 23);
+            this.progressBar.Size = new System.Drawing.Size(294, 23);
             this.progressBar.TabIndex = 4;
             // 
             // lblScannedFile
@@ -100,6 +102,7 @@
             // lstInfectedFiles
             // 
             this.lstInfectedFiles.FormattingEnabled = true;
+            this.lstInfectedFiles.HorizontalScrollbar = true;
             this.lstInfectedFiles.ItemHeight = 15;
             this.lstInfectedFiles.Location = new System.Drawing.Point(12, 56);
             this.lstInfectedFiles.Name = "lstInfectedFiles";
@@ -107,11 +110,26 @@
             this.lstInfectedFiles.TabIndex = 4;
             this.lstInfectedFiles.DoubleClick += new System.EventHandler(this.lstInfectedFiles_DoubleClick);
             // 
+            // btnDownloadIDs
+            // 
+            this.btnDownloadIDs.Location = new System.Drawing.Point(120, 336);
+            this.btnDownloadIDs.Name = "btnDownloadIDs";
+            this.btnDownloadIDs.Size = new System.Drawing.Size(102, 23);
+            this.btnDownloadIDs.TabIndex = 6;
+            this.btnDownloadIDs.Text = "Download IDs";
+            this.btnDownloadIDs.UseVisualStyleBackColor = true;
+            this.btnDownloadIDs.Click += new System.EventHandler(this.btnDownloadIDs_Click);
+            // 
+            // bwrLoadAddonList
+            // 
+            this.bwrLoadAddonList.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwrLoadAddonList_DoWork);
+            // 
             // gif
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 392);
+            this.Controls.Add(this.btnDownloadIDs);
             this.Controls.Add(this.lstInfectedFiles);
             this.Controls.Add(this.lblScannedFile);
             this.Controls.Add(this.progressBar);
@@ -140,5 +158,7 @@
         private ProgressBar progressBar;
         private Label lblScannedFile;
         private ListBox lstInfectedFiles;
+        private Button btnDownloadIDs;
+        private System.ComponentModel.BackgroundWorker bwrLoadAddonList;
     }
 }

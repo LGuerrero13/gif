@@ -3,7 +3,24 @@ namespace gif
     public partial class gif : Form
     {
 
-        private Thread? _thread;
+        Thread? thread;
+        HttpResponseMessage? message;
+        string[]? knownListOfInfectedAddonIDs;
+
+        readonly string[] backupListOfIDs =
+        {
+            "1489890477",
+            "2816948514",
+            "2818916773",
+            "2818933771",
+            "2203246561",
+            "2587458626",
+            "2589006389",
+            "2592662319",
+            "2588410453"
+        };
+        static readonly HttpClient _client = new HttpClient();
+        readonly string _infectedAddonListURL = "https://raw.githubusercontent.com/LGuerrero13/gif/main/infectedAddonIDs.txt";
 
         public gif()
         {
@@ -12,7 +29,13 @@ namespace gif
 
         private string getGmodDirectory()
         {
-            string[] candidatePaths = { @"Program Files\Steam", @"Program Files (x86)\Steam", @"Steam\steamapps\common\GarrysMod\garrysmod\addons" };
+            string[] candidatePaths = 
+            {
+                @"Program Files\Steam",
+                @"Program Files (x86)\Steam",
+                @"Steam\steamapps\common\GarrysMod\garrysmod\addons"
+            };
+
             foreach (var drive in DriveInfo.GetDrives())
             {
                 foreach (var candPath in candidatePaths)
@@ -28,6 +51,7 @@ namespace gif
         private void Form1_Load(object sender, EventArgs e)
         {
             txtboxFilePath.Text = getGmodDirectory();
+            bwrLoadAddonList.RunWorkerAsync();
         }
 
         private void btnFileDialog_Click(object sender, EventArgs e)
@@ -65,14 +89,14 @@ namespace gif
             {
                 allFiles = Directory.GetFiles(txtboxFilePath.Text, "*.gma");
             }
-            catch (DirectoryNotFoundException dnfEx)
+            catch (DirectoryNotFoundException)
             {
-                MessageBox.Show($"Directory \"{txtboxFilePath.Text}\" is not a valid directory.", "Folder path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                displayError($"Directory \"{txtboxFilePath.Text}\" is not a valid directory", "Folder directory/path error");
                 return;
             }
             catch (Exception genEx)
             {
-                MessageBox.Show($"There was an error using this program\nError: {genEx.Message}.", "Folder path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                displayError($"There was an error using this program\nError: {genEx.Message}", "General program error");
                 return;
             }
 
@@ -80,18 +104,6 @@ namespace gif
                 Taken from https://www.reddit.com/r/gmod/comments/vl9fie/psa_everything_known_about_june_workshop_incident/
                 Thanks u/thejaviertc
             */
-            string[] knowListOfInfectedAddonIDs =
-            {
-                "1489890477",
-                "2816948514",
-                "2818916773",
-                "2818933771",
-                "2203246561",
-                "2587458626",
-                "2589006389",
-                "2592662319",
-                "2588410453"
-            };
 
             if (progressBar.InvokeRequired) // required to call component created in a different thread.
             {
@@ -101,7 +113,7 @@ namespace gif
             foreach (string file in allFiles)
             {
 
-                bool containsKnownInfectedFile = knowListOfInfectedAddonIDs.Any(workshopID => file.Contains(workshopID));
+                bool containsKnownInfectedFile = knownListOfInfectedAddonIDs.Any(workshopID => file.Contains(workshopID));
 
                 /* skip parsing the file if we already know the workshopid is that of an infected one */
                 if (containsKnownInfectedFile)
@@ -165,9 +177,9 @@ namespace gif
             lblScannedFile.ForeColor = Color.Black;
             btnScan.Enabled = false;
 
-            _thread = new Thread(new ThreadStart(findInfectedFiles));
-            _thread.IsBackground = true;
-            _thread.Start();
+            thread = new Thread(new ThreadStart(findInfectedFiles));
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private void lstInfectedFiles_DoubleClick(object sender, EventArgs e)
@@ -178,6 +190,70 @@ namespace gif
                 string args = string.Format("/e, /select, \"{0}\"", path);
                 System.Diagnostics.Process.Start("explorer.exe", args);
             }
+        }
+
+        private void bwrLoadAddonList_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            updateAddonList();
+        }
+
+        private void btnDownloadIDs_Click(object sender, EventArgs e)
+        {
+            updateAddonList();
+        }
+
+        private void updateAddonList()
+        {
+            try
+            {
+                lblScannedFile.Invoke(new MethodInvoker(delegate 
+                {
+                    lblScannedFile.Text = "Attempting download of latest infected IDs";
+                }));
+
+                // Create a HttpResponse<essage whhich will get the raw .txt file contents
+                message = _client.GetAsync(_infectedAddonListURL).Result;
+
+                // Ensure that the request goes through with Status Code 200, else throw an exception
+                message.EnsureSuccessStatusCode();
+
+                // Get the retrieved contents and convert it into a string[] array through splitting the string
+                // The result is all the ID's separated by a new line
+                knownListOfInfectedAddonIDs = message.Content.ReadAsStringAsync().Result.Split('\n');
+
+                lblScannedFile.Invoke(new MethodInvoker(delegate
+                { 
+                    displaySuccess("Download successful!");
+                }));
+            }
+            catch (HttpRequestException httpEx)
+            {
+                displayError($"There was an error trying to get the resource: {_infectedAddonListURL}\nError: {httpEx.Message}", "HTTP request error");
+                knownListOfInfectedAddonIDs = backupListOfIDs;
+                return;
+            }
+            catch (Exception genEx)
+            {
+                displayError($"There was an error trying to use the program\nError: {genEx.Message}", "General program error");
+                knownListOfInfectedAddonIDs = backupListOfIDs;
+                return;
+            }
+        }
+
+        private void displayError(string error, string title)
+        {
+            MessageBox.Show(error, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            lblScannedFile.Invoke(new MethodInvoker(delegate
+            {
+                lblScannedFile.ForeColor = Color.Red;
+                lblScannedFile.Text = "Error occurred, try running the operation again";
+            }));
+        }
+
+        private void displaySuccess(string success)
+        {
+            lblScannedFile.ForeColor = Color.Green;
+            lblScannedFile.Text = success;
         }
     }
 }
