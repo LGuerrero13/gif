@@ -33,7 +33,9 @@ namespace gif
             {
                 @"Program Files\Steam",
                 @"Program Files (x86)\Steam",
-                @"Steam\steamapps\common\GarrysMod\garrysmod\addons"
+                @"Steam\steamapps\common\GarrysMod\garrysmod\addons",
+                @"Steam\steamapps\workshop\content\4000",
+                @"SteamLibrary\steamapps\workshop\content\4000"
             };
 
             foreach (var drive in DriveInfo.GetDrives())
@@ -94,6 +96,11 @@ namespace gif
                 displayError($"Directory \"{txtboxFilePath.Text}\" is not a valid directory", "Folder directory/path error");
                 return;
             }
+            catch (IOException ioEx)
+            {
+                displayError($"There was an error trying get the files from the directory\nError: {ioEx.Message}", "File retrieval/access error");
+                return;
+            }
             catch (Exception genEx)
             {
                 displayError($"There was an error using this program\nError: {genEx.Message}", "General program error");
@@ -131,15 +138,33 @@ namespace gif
                     progressBar.Invoke(new MethodInvoker(delegate { progressBar.Value += 1; }));
                 }
 
-                string[] lines = File.ReadAllLines(file);
-                string? firstOccurance = lines.FirstOrDefault(line => line.Contains("I hope you realize you aren't safe in workshop anymore"));
-
-                if (firstOccurance != null)
+                try
                 {
-                    if (lstInfectedFiles.InvokeRequired)
+                    bool firstOccurance = false;
+                    IEnumerable<string> lines = File.ReadLines(file);
+                    foreach (string line in lines)
                     {
-                        lstInfectedFiles.Invoke(new MethodInvoker(delegate { lstInfectedFiles.Items.Add(file); }));
+                        if (line.Contains("I hope you realize you aren't safe in workshop anymore"))
+                            firstOccurance = true;
                     }
+
+                    if (firstOccurance)
+                    {
+                        if (lstInfectedFiles.InvokeRequired)
+                        {
+                            lstInfectedFiles.Invoke(new MethodInvoker(delegate { lstInfectedFiles.Items.Add(file); }));
+                        }
+                    }
+                }
+                catch (IOException ioEx)
+                {
+                    displayError($"There was an error trying read the .gma files\nError: {ioEx.Message}", "File read error");
+                    return;
+                }
+                catch (Exception genEx)
+                {
+                    displayError($"There was an error trying to use the program\nError: {genEx.Message}", "General program error");
+                    return;
                 }
             }
 
