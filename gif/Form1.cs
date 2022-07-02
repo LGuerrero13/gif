@@ -21,7 +21,7 @@ namespace gif
             "2588410453"
         };
         static readonly HttpClient _client = new HttpClient();
-        string _infectedAddonListURL = "https://raw.githubusercontent.com/LGuerrero13/gif/main/infectedAddonIDs.txt";
+        readonly string _infectedAddonListURL = "https://raw.githubusercontent.com/LGuerrero13/gif/main/infectedAddonIDs.txt";
 
         public gif()
         {
