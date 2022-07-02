@@ -91,12 +91,12 @@ namespace gif
             }
             catch (DirectoryNotFoundException)
             {
-                MessageBox.Show($"Directory \"{txtboxFilePath.Text}\" is not a valid directory.", "Folder path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                displayError($"Directory \"{txtboxFilePath.Text}\" is not a valid directory", "Folder directory/path error");
                 return;
             }
             catch (Exception genEx)
             {
-                MessageBox.Show($"There was an error using this program\nError: {genEx.Message}.", "Folder path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                displayError($"There was an error using this program\nError: {genEx.Message}", "General program error");
                 return;
             }
 
@@ -197,7 +197,7 @@ namespace gif
             updateAddonList();
         }
 
-        private void btnUpdateIDs_Click(object sender, EventArgs e)
+        private void btnDownloadIDs_Click(object sender, EventArgs e)
         {
             updateAddonList();
         }
@@ -226,39 +226,28 @@ namespace gif
                     displaySuccess("Download successful!");
                 }));
             }
-            catch (IOException ioEx)
+            catch (HttpRequestException httpEx)
             {
-                lblScannedFile.Invoke(new MethodInvoker(delegate
-                {
-                    displayError($"There was an error trying to access/modify the file: {ioEx.Message}");
-                }));
-                knownListOfInfectedAddonIDs = backupListOfIDs;
-                return;
-            }
-            catch (UnauthorizedAccessException uaEx)
-            {
-                lblScannedFile.Invoke(new MethodInvoker(delegate
-                {
-                    displayError($"This program does not have access to the program's location: {uaEx.Message}");
-                }));
+                displayError($"There was an error trying to get the resource: {_infectedAddonListURL}\nError: {httpEx.Message}", "HTTP request error");
                 knownListOfInfectedAddonIDs = backupListOfIDs;
                 return;
             }
             catch (Exception genEx)
             {
-                lblScannedFile.Invoke(new MethodInvoker(delegate
-                {
-                    displayError($"There was an error trying to use the program: {genEx.Message}");
-                }));
+                displayError($"There was an error trying to use the program\nError: {genEx.Message}", "General program error");
                 knownListOfInfectedAddonIDs = backupListOfIDs;
                 return;
             }
         }
 
-        private void displayError(string error)
+        private void displayError(string error, string title)
         {
-            lblScannedFile.ForeColor = Color.Red;
-            lblScannedFile.Text = error;
+            MessageBox.Show(error, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            lblScannedFile.Invoke(new MethodInvoker(delegate
+            {
+                lblScannedFile.ForeColor = Color.Red;
+                lblScannedFile.Text = "Error occurred, try running the operation again";
+            }));
         }
 
         private void displaySuccess(string success)
