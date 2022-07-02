@@ -6,7 +6,6 @@ namespace gif
         Thread? thread;
         HttpResponseMessage? message;
         string[]? knownListOfInfectedAddonIDs;
-        string? content;
 
         readonly string[] backupListOfIDs =
         {
@@ -218,22 +217,10 @@ namespace gif
                 // Ensure that the request goes through with Status Code 200, else throw an exception
                 message.EnsureSuccessStatusCode();
 
-                if (!message.IsSuccessStatusCode)
-                {
-                    knownListOfInfectedAddonIDs = backupListOfIDs;
-                    return;
-                }
+                // Get the retrieved contents and convert it into a string[] array through splitting the string
+                // The result is all the ID's separated by a new line
+                knownListOfInfectedAddonIDs = message.Content.ReadAsStringAsync().Result.Split('\n');
 
-                // Get the retrieved contents and set it to a string variable for writing to a local file
-                content = message.Content.ReadAsStringAsync().Result;
-                using (StreamWriter _writer = new StreamWriter("infectedAddonIDs.txt"))
-                {
-                    _writer.WriteLine(content);
-                    _writer.Close();
-                }
-
-                // Read the local file's contents
-                knownListOfInfectedAddonIDs = File.ReadAllLines("infectedAddonIDs.txt");
                 lblScannedFile.Invoke(new MethodInvoker(delegate
                 { 
                     displaySuccess("Download successful!");
