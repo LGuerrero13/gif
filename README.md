@@ -6,6 +6,8 @@ gif (Goatse infection finder) is a tool that helps Garry's Mod users find infect
 * _(Optional)_ Hit "Download IDs" to retrieve list of updated workshop IDs from github list hosted on this repo.
 * Hit scan and wait for it to list out any infected addons.
 * If any addons were found, they will be listed inside the listbox where you can double click on them to open the folder containing the infected file. If nothing was found you are clean!
+
+__DON'T FORGET TO UNSUBSCRIBE FROM THE ADDONS IN THE WORKSHOP! THEY WILL RE-DOWNLOAD IF YOU DON'T WHEN YOU OPEN THE GAME AGAIN!__
         
 ## Contributions
 Don't be afraid to contribute to the project, just submit a Pull Request and I will review and approve them if they're good additions!
