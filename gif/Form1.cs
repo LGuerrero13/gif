@@ -165,10 +165,15 @@ namespace gif
             if (progressBar.InvokeRequired)
             {
                 progressBar.Invoke(new MethodInvoker(delegate { progressBar.Value = 0; }));
+                lblScannedFile.Invoke(new MethodInvoker(delegate 
+                {
+                    lblScannedFile.ForeColor = Color.Black;
+                    lblScannedFile.Text = $"File: N/A";
+                }));
 
                 if (lstInfectedFiles.Items.Count <= 0)
                 {
-                    lblScannedFile.Invoke(new MethodInvoker(delegate {
+                    lblStatusMessage.Invoke(new MethodInvoker(delegate {
                         lblStatusMessage.ForeColor = Color.Green;
                         lblStatusMessage.Text = "Done, you are clean!";
                         btnScan.Enabled = true;
@@ -176,7 +181,7 @@ namespace gif
                 }
                 else
                 {
-                    lblScannedFile.Invoke(new MethodInvoker(delegate {
+                    lblStatusMessage.Invoke(new MethodInvoker(delegate {
                         lblStatusMessage.ForeColor = Color.Red;
                         lblStatusMessage.Text = "Infected file(s) detected! Please delete and remove from workshop.";
                         btnScan.Enabled = true;
@@ -227,7 +232,7 @@ namespace gif
         {
             try
             {
-                lblScannedFile.Invoke(new MethodInvoker(delegate 
+                lblStatusMessage.Invoke(new MethodInvoker(delegate 
                 {
                     lblStatusMessage.Text = "Attempting download of latest infected IDs";
                 }));
@@ -242,10 +247,7 @@ namespace gif
                 // The result is all the ID's separated by a new line
                 knownListOfInfectedAddonIDs = message.Content.ReadAsStringAsync().Result.Split('\n');
 
-                lblScannedFile.Invoke(new MethodInvoker(delegate
-                { 
-                    displaySuccess("Download successful!");
-                }));
+                displaySuccess("Download successful!");
             }
             catch (HttpRequestException httpEx)
             {
@@ -264,7 +266,7 @@ namespace gif
         private void displayError(string error, string title)
         {
             MessageBox.Show(error, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            lblScannedFile.Invoke(new MethodInvoker(delegate
+            lblStatusMessage.Invoke(new MethodInvoker(delegate
             {
                 lblStatusMessage.ForeColor = Color.Red;
                 lblStatusMessage.Text = "Error occurred, try running the operation again";
@@ -273,8 +275,11 @@ namespace gif
 
         private void displaySuccess(string success)
         {
-            lblStatusMessage.ForeColor = Color.Green;
-            lblStatusMessage.Text = success;
+            lblStatusMessage.Invoke(new MethodInvoker(delegate
+            {
+                lblStatusMessage.ForeColor = Color.Green;
+                lblStatusMessage.Text = success;
+            }));
         }
     }
 }
