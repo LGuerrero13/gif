@@ -39,6 +39,8 @@
             this.lstInfectedFiles = new System.Windows.Forms.ListBox();
             this.btnDownloadIDs = new System.Windows.Forms.Button();
             this.bwrLoadAddonList = new System.ComponentModel.BackgroundWorker();
+            this.lblStatusMessage = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblAddonsPath
@@ -52,6 +54,8 @@
             // 
             // txtboxFilePath
             // 
+            this.txtboxFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtboxFilePath.Location = new System.Drawing.Point(12, 27);
             this.txtboxFilePath.Name = "txtboxFilePath";
             this.txtboxFilePath.Size = new System.Drawing.Size(430, 23);
@@ -65,6 +69,7 @@
             // 
             // btnFileDialog
             // 
+            this.btnFileDialog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFileDialog.Location = new System.Drawing.Point(448, 27);
             this.btnFileDialog.Name = "btnFileDialog";
             this.btnFileDialog.Size = new System.Drawing.Size(75, 23);
@@ -75,6 +80,7 @@
             // 
             // btnScan
             // 
+            this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnScan.Location = new System.Drawing.Point(11, 336);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(102, 23);
@@ -85,6 +91,8 @@
             // 
             // progressBar
             // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(229, 336);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(294, 23);
@@ -92,8 +100,9 @@
             // 
             // lblScannedFile
             // 
+            this.lblScannedFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblScannedFile.AutoSize = true;
-            this.lblScannedFile.Location = new System.Drawing.Point(12, 367);
+            this.lblScannedFile.Location = new System.Drawing.Point(12, 368);
             this.lblScannedFile.Name = "lblScannedFile";
             this.lblScannedFile.Size = new System.Drawing.Size(53, 15);
             this.lblScannedFile.TabIndex = 5;
@@ -101,6 +110,9 @@
             // 
             // lstInfectedFiles
             // 
+            this.lstInfectedFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstInfectedFiles.FormattingEnabled = true;
             this.lstInfectedFiles.HorizontalScrollbar = true;
             this.lstInfectedFiles.ItemHeight = 15;
@@ -112,6 +124,7 @@
             // 
             // btnDownloadIDs
             // 
+            this.btnDownloadIDs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDownloadIDs.Location = new System.Drawing.Point(120, 336);
             this.btnDownloadIDs.Name = "btnDownloadIDs";
             this.btnDownloadIDs.Size = new System.Drawing.Size(102, 23);
@@ -124,11 +137,33 @@
             // 
             this.bwrLoadAddonList.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwrLoadAddonList_DoWork);
             // 
+            // lblStatusMessage
+            // 
+            this.lblStatusMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblStatusMessage.AutoSize = true;
+            this.lblStatusMessage.Location = new System.Drawing.Point(50, 390);
+            this.lblStatusMessage.Name = "lblStatusMessage";
+            this.lblStatusMessage.Size = new System.Drawing.Size(29, 15);
+            this.lblStatusMessage.TabIndex = 7;
+            this.lblStatusMessage.Text = "N/A";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(12, 390);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(42, 15);
+            this.lblStatus.TabIndex = 8;
+            this.lblStatus.Text = "Status:";
+            // 
             // gif
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 392);
+            this.ClientSize = new System.Drawing.Size(537, 414);
+            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.lblStatusMessage);
             this.Controls.Add(this.btnDownloadIDs);
             this.Controls.Add(this.lstInfectedFiles);
             this.Controls.Add(this.lblScannedFile);
@@ -137,9 +172,8 @@
             this.Controls.Add(this.btnFileDialog);
             this.Controls.Add(this.txtboxFilePath);
             this.Controls.Add(this.lblAddonsPath);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(553, 453);
             this.Name = "gif";
             this.Text = "Goatse Infection Finder";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -160,5 +194,7 @@
         private ListBox lstInfectedFiles;
         private Button btnDownloadIDs;
         private System.ComponentModel.BackgroundWorker bwrLoadAddonList;
+        private Label lblStatusMessage;
+        private Label lblStatus;
     }
 }

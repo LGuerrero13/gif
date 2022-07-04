@@ -169,16 +169,16 @@ namespace gif
                 if (lstInfectedFiles.Items.Count <= 0)
                 {
                     lblScannedFile.Invoke(new MethodInvoker(delegate {
-                        lblScannedFile.ForeColor = Color.Green; 
-                        lblScannedFile.Text = "Done, you are clean!";
+                        lblStatusMessage.ForeColor = Color.Green;
+                        lblStatusMessage.Text = "Done, you are clean!";
                         btnScan.Enabled = true;
                     }));
                 }
                 else
                 {
                     lblScannedFile.Invoke(new MethodInvoker(delegate {
-                        lblScannedFile.ForeColor = Color.Red;
-                        lblScannedFile.Text = "Infected file(s) detected! Please delete and remove from workshop.";
+                        lblStatusMessage.ForeColor = Color.Red;
+                        lblStatusMessage.Text = "Infected file(s) detected! Please delete and remove from workshop.";
                         btnScan.Enabled = true;
                     }));
                 }
@@ -194,6 +194,8 @@ namespace gif
             }
 
             lblScannedFile.ForeColor = Color.Black;
+            lblStatusMessage.ForeColor = Color.Black;
+            lblStatusMessage.Text = "Scanning files";
             btnScan.Enabled = false;
 
             thread = new Thread(new ThreadStart(findInfectedFiles));
@@ -227,7 +229,7 @@ namespace gif
             {
                 lblScannedFile.Invoke(new MethodInvoker(delegate 
                 {
-                    lblScannedFile.Text = "Attempting download of latest infected IDs";
+                    lblStatusMessage.Text = "Attempting download of latest infected IDs";
                 }));
 
                 // Create a HttpResponse<essage whhich will get the raw .txt file contents
@@ -264,15 +266,15 @@ namespace gif
             MessageBox.Show(error, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
             lblScannedFile.Invoke(new MethodInvoker(delegate
             {
-                lblScannedFile.ForeColor = Color.Red;
-                lblScannedFile.Text = "Error occurred, try running the operation again";
+                lblStatusMessage.ForeColor = Color.Red;
+                lblStatusMessage.Text = "Error occurred, try running the operation again";
             }));
         }
 
         private void displaySuccess(string success)
         {
-            lblScannedFile.ForeColor = Color.Green;
-            lblScannedFile.Text = success;
+            lblStatusMessage.ForeColor = Color.Green;
+            lblStatusMessage.Text = success;
         }
     }
 }
