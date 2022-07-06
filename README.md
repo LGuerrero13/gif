@@ -14,7 +14,7 @@ __DON'T FORGET TO UNSUBSCRIBE FROM THE ADDONS IN THE WORKSHOP! THEY WILL RE-DOWN
 Don't be afraid to contribute to the project, just submit a Pull Request and I will review and approve them if they're good additions!
 
 ## Download
-[Releases](https://github.com/LGuerrero13/gif/releases/tag/Release)
+[Releases](https://github.com/LGuerrero13/gif/releases/tag/Release)__
 Make sure you have [Microsoft .NET 6.0 installed](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime?cid=getdotnetcore).
 ## Authors
 Leonardo Guerrero - Creator
