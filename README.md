@@ -15,6 +15,6 @@ Don't be afraid to contribute to the project, just submit a Pull Request and I w
 
 ## Download
 [Releases](https://github.com/LGuerrero13/gif/releases/tag/Release)
-
+Make sure you have (Microsoft .NET 6.0 installed)[https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime?cid=getdotnetcore].
 ## Authors
 Leonardo Guerrero - Creator
